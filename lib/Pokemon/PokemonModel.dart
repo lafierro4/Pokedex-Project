@@ -22,7 +22,7 @@ class Pokemon {
   late List<int>? stats;
 
   /// Only gets the non-nullable parameters, for testing important parts
-  Pokemon.essential(this.id, this.name, this.types,this.officialArt);
+  Pokemon.essential(this.id, this.name, this.types,this.officialArt,);
 
   ///full parameter constructor for Pokemon
   Pokemon(this.id, this.name, this.types, this.officialArt,
@@ -52,3 +52,33 @@ class Pokemon {
         'abilities: $abilities, moves: $moves, stats: $stats}';
   }
 }
+
+List<Pokemon> pokemonForTesting(){
+  List<Pokemon> pL = [];
+  Pokemon pokemon2 = Pokemon.essential(393, 'piplup',
+      [PokemonTypes('water', getTypeColor('water'), getTypeIcon('water')),],
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/393.png');
+  pL.add(Pokemon(1, 'bulbasuar', [PokemonTypes('grass', getTypeColor('grass'), getTypeIcon('grass')),
+    PokemonTypes('poison', getTypeColor('poison'), getTypeIcon('poison'))],
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png'));
+  pL.add(Pokemon(2,'ivysaur',[PokemonTypes('grass',getTypeColor('grass'), getTypeIcon('grass'),),
+    PokemonTypes('poison',getTypeColor('poison'), getTypeIcon('poison'),)],
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png'));
+  pL.add(Pokemon(3,'venusaur',[PokemonTypes('grass',getTypeColor('grass'), getTypeIcon('grass'),),
+    PokemonTypes('poison',getTypeColor('poison'), getTypeIcon('poison'),)],
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png'));
+  pL.add(Pokemon(4,'charmander',[PokemonTypes('fire',getTypeColor('fire'), getTypeIcon('fire'),)],
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png',));
+  pL.add(Pokemon(5,'charmeleon',[PokemonTypes('fire',getTypeColor('fire'), getTypeIcon('fire'),)],'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png',));
+  pL.add(Pokemon(6,'charizard',[PokemonTypes('fire',getTypeColor('fire'), getTypeIcon('fire'),), PokemonTypes('flying',getTypeColor('flying'), getTypeIcon('flying'),)],'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png',));
+  pL.add(Pokemon(7,'squirtle',[PokemonTypes('water',getTypeColor('water'), getTypeIcon('water'),)],
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png',));
+  pL.add(Pokemon(8,'wartortle',[PokemonTypes('water',getTypeColor('water'), getTypeIcon('water'),)],
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png',));
+  pL.add(Pokemon(9,'blastoise',[PokemonTypes('water',getTypeColor('water'), getTypeIcon('water'),)],
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png',));
+  pL.add(pokemon2);
+  return pL;
+
+}
+
