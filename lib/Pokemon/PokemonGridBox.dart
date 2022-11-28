@@ -9,7 +9,8 @@ class PokemonInfoBox extends StatelessWidget {
   const PokemonInfoBox(this.pokemon, {super.key});
   @override
   Widget build(BuildContext context){
-    return GridTile( header: Text('#${pokemon.id}',
+    return GridTile( header:
+    Text(_pokemonID(pokemon.id),
       style: const TextStyle(color: Colors.black, fontSize: 16 ),
       textAlign: TextAlign.left,),
         child: pokemonInfoDisplay(context,pokemon)
@@ -17,38 +18,78 @@ class PokemonInfoBox extends StatelessWidget {
   }
 }
 
+String _pokemonID(int id){
+  if(id < 10){
+    return '#00$id';
+  }else if(id > 10 && id < 100){
+    return '#0$id';
+  }else{
+    return '#$id';
+  }
+}
 
 Widget pokemonInfoDisplay(BuildContext context, Pokemon pokemon){
+  bool has2ndType = pokemon.types.asMap().containsKey(1);
 
+  capitalize(String string){
+    return string.replaceFirst(string[0], string[0].toUpperCase());
+  }
   return  Container(
-    color:  pokemon.types[0].typeColor,
+    decoration: has2ndType == true ? _TwoTypes(pokemon) : _SingleType(pokemon),
     child: Column(mainAxisAlignment:MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text(pokemon.name.replaceFirst(pokemon.name[0], pokemon.name[0].toUpperCase()),
+        Text(capitalize(pokemon.name),
           style: const TextStyle(color: Colors.black, fontSize: 20 ),
           textAlign: TextAlign.center,),
-        Expanded(child:Image.network(pokemon.officialArt, semanticLabel: '${pokemon.name}\'s artwork' ,
-          height: 100 ,width: 100, fit: BoxFit.scaleDown,)),
+         Expanded(child: loadPokemonImage(pokemon.officialArt,)),
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-            Container( color: pokemon.types[0].typeColor,
+            Container( decoration: BoxDecoration(
+                color : pokemon.types[0].typeColor,
+                border: Border.all(color: Colors.black)),
+              height: 30,
               child: Row(children: <Widget>[
                 Icon(pokemon.types[0].typeIcon),
-                Text(pokemon.types[0].name),
+                Text(' ${capitalize(pokemon.types[0].name)} ',
+                  style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
               ],),
             ),
-            if(pokemon.types.asMap().containsKey(1))...{
-              Container( color : pokemon.types[1].typeColor,
-              child:Row(children: <Widget>[
+            if(has2ndType)...{
+              Container( decoration: BoxDecoration(
+                  color : pokemon.types[1].typeColor,
+                  border: Border.all(color: Colors.black)),
+              height: 30,
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
                 Icon(pokemon.types[1].typeIcon),
-                Text(pokemon.types[1].name),
+                Text(' ${capitalize(pokemon.types[1].name)} ',
+                  style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
               ],) )
+
             },
         ]
         )
       ],
     ),
+
   );
 }
+
+BoxDecoration _SingleType(Pokemon pokemon){
+  return BoxDecoration(
+      border: Border.all(color: Colors.black),
+      color: pokemon.types[0].typeColor
+  );
+}
+
+BoxDecoration _TwoTypes(Pokemon pokemon){
+  return BoxDecoration(
+  border: Border.all(color: Colors.black),
+  gradient: LinearGradient(colors: [pokemon.types[0].typeColor, pokemon.types[1].typeColor],
+    tileMode: TileMode.repeated
+  )
+  );
+  }

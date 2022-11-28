@@ -36,8 +36,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
   Pokemon pokemon2 = Pokemon(000, 'null', [], 'null');
   @override
   void initState() {
@@ -46,68 +44,85 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: const Color(0xffffffff),
-        body: PokedexScreen(pokemon: pokemon2));
-/*
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-            child: FutureBuilder(
-              future: pokemon2,
-              builder: (BuildContext context, AsyncSnapshot<Pokemon> futPokemon) {
-                if (snapshot.hasData) {
-                  return PokedexScreen(pokemon: snapshot.data!);
-                } else if(snapshot.hasError){
-                    return Text("Error has occurred: ${snapshot.error}");
-                  }else{ return pokedexProcess();}
-                },
-    )
-    ));
-  }
-
- */
+        backgroundColor: const Color(0xffffffff),
+        body: PokedexScreen(pokemon: pokemon2));
   }
 }
- class PokedexScreen extends StatefulWidget{
+
+class PokedexScreen extends StatefulWidget {
   final Pokemon pokemon;
 
   const PokedexScreen({super.key, required this.pokemon});
 
   @override
   State<StatefulWidget> createState() => _PokedexScreen();
- }
+}
 
- class _PokedexScreen extends State<PokedexScreen>{
-
-   List<Pokemon> allPokemon = pokemonForTesting();
-   @override
+class _PokedexScreen extends State<PokedexScreen> {
+  List<Pokemon> allPokemon = pokemonForTesting();
+  List<Pokemon> filteredPokemon = [];
+  final filter = TextEditingController();
+  @override
   Widget build(BuildContext context) {
-    return GridView.builder( itemCount: allPokemon.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,crossAxisSpacing: 5,mainAxisSpacing: 5),
-      itemBuilder: (BuildContext context, int index) {
-       return RawMaterialButton(onPressed: () =>{ PokedexEntryExpanded(pokemon: allPokemon[index])},
-          child : PokemonInfoBox(allPokemon[index])
-     );
-        },
-    );
+    return Scaffold(
+        appBar: AppBar(
+          leading: const Icon(Icons.catching_pokemon),
+          title: const Text('Pokedex App'),
+          backgroundColor: Colors.red,
+        ),
+        body: Column(children: <Widget>[
+          TextField(
+              controller: filter,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                hintText: "Search for Pokemon",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: const BorderSide(color: Colors.cyan)),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  filteredPokemon = allPokemon
+                      .where((element) => element.name
+                          .toLowerCase()
+                          .contains(value.toLowerCase()))
+                      .toList();
+                });
+              }),
+          Expanded(
+              child: GridView.builder(
+            itemCount: allPokemon.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, crossAxisSpacing: 1, mainAxisSpacing: 2),
+            itemBuilder: (BuildContext context, int index) {
+              return PokemonInfoBox(allPokemon[index]);
+            },
+          ))
+        ]));
   }
- }
 
- 
- class PokedexEntryExpanded extends StatefulWidget{
+  void searchPokemon(String search) {
+    final suggestions = allPokemon.where((pokemon) {
+      final pokemonName = pokemon.name.toLowerCase();
+      final input = search.toLowerCase();
+      return pokemonName.contains(input);
+    }).toList();
+    setState(() => allPokemon = suggestions);
+  }
+}
+
+class PokedexEntryExpanded extends StatefulWidget {
   final Pokemon pokemon;
   const PokedexEntryExpanded({super.key, required this.pokemon});
 
   @override
-   State<StatefulWidget> createState() => _PokedexEntryExpanded();
- }
+  State<StatefulWidget> createState() => _PokedexEntryExpanded();
+}
 
-class _PokedexEntryExpanded extends State<PokedexEntryExpanded>{
+class _PokedexEntryExpanded extends State<PokedexEntryExpanded> {
   @override
   Widget build(BuildContext context) {
     return Text(widget.pokemon.name);
   }
-  
 }
