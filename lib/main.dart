@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:pokedex_project/FetchPokemon.dart';
-import 'package:pokedex_project/Pokemon/PokemonGridBox.dart';
+import 'package:pokedex_project/Screens/PokemonGridBox.dart';
 import 'package:pokedex_project/Pokemon/PokemonModel.dart';
 import 'package:pokedex_project/Pokemon/PokemonType.dart';
 import 'package:http/http.dart' as http;
@@ -45,8 +45,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xffffffff),
-        body: PokedexScreen(pokemon: pokemon2));
+        backgroundColor: Colors.red,
+        body: Center(
+    child: Column(
+      children: const <Widget>[
+        Text("Welcome to the Pokedex App,"),
+      ],
+    )
+    ));
   }
 }
 
@@ -61,6 +67,7 @@ class PokedexScreen extends StatefulWidget {
 
 class _PokedexScreen extends State<PokedexScreen> {
   List<Pokemon> allPokemon = pokemonForTesting();
+  List<Pokemon> backup = [];
   List<Pokemon> filteredPokemon = [];
   final filter = TextEditingController();
   @override
@@ -74,20 +81,21 @@ class _PokedexScreen extends State<PokedexScreen> {
         body: Column(children: <Widget>[
           TextField(
               controller: filter,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search),
                 hintText: "Search for Pokemon",
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: const BorderSide(color: Colors.cyan)),
+                    borderSide: BorderSide(color: Colors.cyan)),
               ),
-              onChanged: (value) {
+              onChanged: (filter) {
                 setState(() {
+                  backup = allPokemon;
                   filteredPokemon = allPokemon
                       .where((element) => element.name
                           .toLowerCase()
-                          .contains(value.toLowerCase()))
+                          .contains(filter.toLowerCase()))
                       .toList();
+                  allPokemon = filteredPokemon;
                 });
               }),
           Expanded(

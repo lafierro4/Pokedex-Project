@@ -80,8 +80,11 @@ Widget pokemonInfoDisplay(BuildContext context, Pokemon pokemon){
 
 BoxDecoration _SingleType(Pokemon pokemon){
   return BoxDecoration(
-      border: Border.all(color: Colors.black),
-      color: pokemon.types[0].typeColor
+    image: const DecorationImage(
+        image: AssetImage('assets/bg_pokeball.png'),
+        alignment: Alignment.bottomLeft),
+    border: Border.all(color: Colors.black),
+    color: pokemon.types[0].typeColor
   );
 }
 
