@@ -1,18 +1,13 @@
 
-import 'dart:convert';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:pokedex_project/Pokemon/PokemonModel.dart';
 
 
-_getPokemon(String url) async {
-    var response = await http.get(Uri.parse(url));
-    var decode = json.decode(response.body);
+var url = 'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0';
 
-    Pokemon pokemon = Pokemon.fromJson(decode);
-  return pokemon;
-}
+
 
 Widget pokedexProcess() {
   return Scaffold(

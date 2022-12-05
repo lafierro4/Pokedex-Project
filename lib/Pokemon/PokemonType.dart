@@ -1,11 +1,18 @@
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'pokemon_type_icons_icons.dart';
 
+part 'PokemonType.g.dart';
+
+@HiveType(typeId: 1)
 class PokemonTypes {
+  @HiveField(0)
   late String name;
+  @HiveField(1)
   late Color typeColor;
-  late IconData typeIcon;
+  @HiveField(2)
+  late int typeIcon;
   late String? typeUrl;
   late List<PokemonTypes>? weakTo; //takes double damage
   late List<PokemonTypes>? strongAgainst; //deals double damage
@@ -17,7 +24,7 @@ class PokemonTypes {
     final name = data['name'];
     final typeUrl = data['url'];
     final typeColor = getTypeColor(name);
-    final typeIcon = getTypeIcon(name);
+    final typeIcon = getTypeIconCode(name);
     return PokemonTypes(name,typeColor,typeIcon,typeUrl: typeUrl);
   }
 }
@@ -66,46 +73,46 @@ Color getTypeColor(String type) {
   }
 }
 
-IconData getTypeIcon(String type) {
+int getTypeIconCode(String type) {
   switch (type) {
     case 'bug':
-      return  PokemonTypeIcons.bug;
+      return 0xe800;
     case 'dark':
-      return  PokemonTypeIcons.dark;
+      return 0xe80e;
     case 'dragon':
-      return  PokemonTypeIcons.dragon;
+      return 0xe80f;
     case 'electric':
-      return  PokemonTypeIcons.electric;
+      return 0xe810;
     case 'fairy':
-      return  PokemonTypeIcons.fairy;
+      return 0xe811;
     case 'fighting':
-      return  PokemonTypeIcons.fighting;
+      return 0xe801;
     case 'fire':
-      return  PokemonTypeIcons.fire;
+      return 0xe802;
     case 'flying':
-      return  PokemonTypeIcons.flying;
+      return 0xe803;
     case 'ghost':
-      return  PokemonTypeIcons.ghost;
+      return 0xe804;
     case 'grass':
-      return  PokemonTypeIcons.grass;
+      return 0xe805;
     case 'ground':
-      return  PokemonTypeIcons.ground;
+      return 0xe806;
     case 'ice':
-      return  PokemonTypeIcons.ice;
+      return 0xe807;
     case 'normal':
-      return  PokemonTypeIcons.normal;
+      return 0xe808;
     case 'poison':
-      return  PokemonTypeIcons.poison;
+      return 0xe809;
     case 'psychic':
-      return  PokemonTypeIcons.psychic;
+      return 0xe80a;
     case 'rock':
-      return  PokemonTypeIcons.rock;
+      return 0xe80b;
     case 'steel':
-      return  PokemonTypeIcons.steel;
+      return 0xe80c;
     case 'water':
-      return  PokemonTypeIcons.water;
+      return 0xe80d;
     default:
-      return  Icons.error;
+      return 0xe237;
   }
 }
 

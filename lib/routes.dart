@@ -1,30 +1,30 @@
 
-
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:pokedex_project/Screens/PokemonDetailScreen.dart';
-import 'package:pokedex_project/main.dart';
 import 'Pokemon/PokemonModel.dart';
+import 'Screens/FavoritesScreen.dart';
+import 'Screens/Pokedex.dart';
 
-class _PokemonArguments{
+class PokemonArguments{
   late final Pokemon pokemon;
-  _PokemonArguments(this.pokemon);
+  PokemonArguments.pokemon(this.pokemon);
 }
 
 class RouteGenerator{
   static Route<dynamic> generateRoute(RouteSettings settings){
     final args = settings.arguments;
-
     switch(settings.name){
-      case '/home': return MaterialPageRoute(builder: (_)=>
-      const MyHomePage()
-      );
-      case '/pokedexGrid':
+      case '/home':
           return MaterialPageRoute(builder: (_) =>
           const PokedexScreen());
-      case 'pokemonDetails':
-        _PokemonArguments arguments = args as _PokemonArguments;
+      case '/pokemonDetails':
+        PokemonArguments arguments = args as PokemonArguments;
           return MaterialPageRoute(builder: (_) =>
               PokemonDetails(pokemon: arguments.pokemon));
+      case '/favoritesScreen' :
+          return MaterialPageRoute(builder: (_) =>
+            const FavoritesScreen());
       default:
           return _errorPage();
     }
